@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wheel of Wellness</title>
+<style>
+  .wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 50px auto;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .sector {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  .sector:nth-child(1) {
+    background-color: #3498db;
+    transform: rotate(0deg);
+  }
+  .sector:nth-child(2) {
+    background-color: #2ecc71;
+    transform: rotate(120deg);
+  }
+  .sector:nth-child(3) {
+    background-color: #e74c3c;
+    transform: rotate(240deg);
+  }
+  .sector:hover {
+    transform: scale(1.1);
+  }
+  .star {
+    display: none;
+  }
+  .selected .star {
+    display: block;
+    color: yellow;
+  }
+</style>
+</head>
+<body>
+
+<div class="wheel-container">
+  <div class="sector" data-parameter="Creativity">&#9734;</div>
+  <div class="sector" data-parameter="Health">&#9734;</div>
+  <div class="sector" data-parameter="Confidence">&#9734;</div>
+</div>
+
+<div id="radar-chart-container">
+  <canvas id="radar-chart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const responses = {
+    Creativity: 0,
+    Health: 0,
+    Confidence: 0
+  };
+
+  const sectors = document.querySelectorAll('.sector');
+
+  sectors.forEach(sector => {
+    sector.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevents the click event from bubbling up to parent elements
+      const parameter = sector.getAttribute('data-parameter');
+      responses[parameter] = (responses[parameter] + 1) % 2;
+      sector.classList.toggle('selected');
+      updateRadarChart();
+    });
+  });
+
+  function updateRadarChart() {
+    const ctx = document.getElementById('radar-chart').getContext('2d');
+    const data = {
+      labels: Object.keys(responses),
+      datasets: [{
+        label: 'Responses',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 2,
+        data: Object.values(responses)
+      }]
+    };
+    const options = {
+      scale: {
+        ticks: {
+          beginAtZero: true,
+          max: 1
+        }
+      }
+    };
+    if(window.myRadarChart) {
+      window.myRadarChart.destroy();
+    }
+    window.myRadarChart = new Chart(ctx, {
+      type: 'radar',
+      data: data,
+      options: options
+    });
+  }
+</script>
+
+</body>
+</html>

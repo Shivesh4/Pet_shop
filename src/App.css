@@ -1,0 +1,19 @@
+.nav-container {
+  text-align: center;
+  margin-top: 20px; /* Adjust the space between navigation and top */
+}
+
+.nav-menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-item {
+  display: inline;
+  margin: 0 10px; /* Adjust the space between navigation items */
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+}

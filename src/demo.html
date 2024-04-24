@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+class Car {
+  constructor(name) {
+    this.brand = name;
+  }
+  display() {
+    return 'Welcome ! ' + this.brand
+  }
+}
+
+class Model extends Car {
+  constructor(name, mod) {
+    super(name);
+    this.model = mod;
+  }
+
+  disp() {
+    return this.display() + ' has ' + this.model + ' in stock'
+  }
+}
+
+
+
+
+
+const automobile = new Model("Volvo", "S60");
+document.write(automobile.disp());
+</script>
+</body>
+</html>
